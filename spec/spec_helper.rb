@@ -98,7 +98,7 @@ RSpec.configure do |config|
   Kernel.srand config.seed
 =end
 
-  RSpec::Matchers.define :have_same_y_value do |y|
-    match { |cell| cell.y == y }
+  RSpec::Matchers.define :have_same_x_value do |x|
+    match { |cell| cell.x == x }
   end
 end

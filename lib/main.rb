@@ -5,3 +5,4 @@ require_relative 'board'
 require 'pry'
 
 game = Game.new
+game.play

@@ -7,7 +7,7 @@ describe Game do
   before do 
     allow(STDOUT).to receive(:write)
   end
-  
+
   describe '#initialize' do
     # Initialize - Test any inside methods
   end
@@ -24,8 +24,20 @@ describe Game do
     end
   end
 
-
   describe '#play' do
     subject(:game_play) { described_class.new }
+  end
+
+  describe '#game_loop' do
+    
+  end
+
+  describe '#verify_number' do
+    subject(:game_verify) { described_class.new }
+    context 'when given a integer between 1 and 7' do
+      xit 'returns the integer' do
+        
+      end
+    end
   end
 end
