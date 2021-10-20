@@ -1,20 +1,29 @@
 # frozen_string_literal: true
 
 class Board
-  attr_reader :cells
+  attr_reader :cells, :x, :y
 
-  def initialize
-    @cells = create_cells
+  def initialize(x = 6, y =7)
+    @x = x
+    @y = y
+    @cells = create_cells(@x, @y)
   end
 
   def display
-    binding.pry
-    puts <<-BOARD
-      
-    BOARD
+    cell_display_order = rearrange_cells(@cells)
+    
+    cell_display_order.size.times do |i|
+      print "\n\t=====================\n\t|" if i % y == 0
+      print "#{cell_display_order[i].value}  |"
+    end
+    puts "\n\t=====================\n\n"
   end
 
-  def create_cells(x = 6, y = 7, cells = [])
+  def rearrange_cells(cells)
+    cells.sort_by { |cell| [cell.y, -(cell.x)] }.reverse
+  end
+
+  def create_cells(x = @x, y = @y, cells = [])
     x.times do |i|
       y.times do |j|
         cells << Cell.new(i, j)
