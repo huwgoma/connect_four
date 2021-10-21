@@ -34,10 +34,6 @@ class Board
     cells
   end
 
-  def column_full?(x)
-    #column = find_column(x)
-
-  end
 
   def find_column(x)
     @cells.select { |cell| cell.x == x }

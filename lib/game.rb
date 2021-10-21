@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Game
-  attr_reader :board
+  attr_reader :board, :current_player
 
   def initialize(board = Board.new)
     @board = board
@@ -18,6 +18,7 @@ class Game
 
   def play
     board.display
+    game_loop
   end
 
   def game_loop
@@ -25,6 +26,7 @@ class Game
   end
 
   def player_input
+    puts "#{@current_player.name}, please enter a number (1-7) where you would like to place your piece."
     loop do
       user_input = gets.chomp.to_i
       verified_number = verify_number(user_input)
@@ -33,11 +35,9 @@ class Game
         next
       end
       target_cell = verify_column(verified_number)
-
-      #return target_cell if target_cell
-      break
       
-      
+      return target_cell if target_cell
+      puts 'That column is full! Please enter another number.'
       
     end
   end
