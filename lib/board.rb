@@ -34,7 +34,8 @@ class Board
     cells
   end
 
-  def drop_piece(y, symbol)
+  def column_full?(x)
+    #column = find_column(x)
 
   end
 

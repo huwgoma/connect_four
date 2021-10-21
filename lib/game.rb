@@ -21,15 +21,33 @@ class Game
   end
 
   def game_loop
-    
+    target_cell = player_input
   end
 
-  def number_input 
-    puts "#{@current_player.name}, please choose a column (1-7) to place your piece in."
-    gets.chomp
+  def player_input
+    loop do
+      user_input = gets.chomp.to_i
+      verified_number = verify_number(user_input)
+      unless verified_number
+        puts "Please enter a valid number between 1-7!"
+        next
+      end
+      target_cell = verify_column(verified_number)
+
+      #return target_cell if target_cell
+      break
+      
+      
+      
+    end
+  end
+
+  def verify_column(input)
+    target_column = board.find_column(input - 1)
+    target_cell = board.find_lowest_cell(target_column)
   end
 
   def verify_number(number)
-
+    return number if number.between?(1, 7)
   end
 end

@@ -62,7 +62,7 @@ describe Board do
 
 
 
-
+  
   describe '#find_column' do
     subject(:board_column) { described_class.new }
     context 'when given an x value' do
