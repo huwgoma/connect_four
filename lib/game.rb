@@ -30,17 +30,15 @@ class Game
     loop do
       user_input = gets.chomp.to_i
       verified_number = verify_number(user_input)
+      
+      unless verified_number 
+        puts "Please enter a valid number between 1-7!"
+        next
+      end
 
-      puts "Please enter a valid number between 1-7!" unless verified_number
-
-      # unless verified_number
-      #   puts "Please enter a valid number between 1-7!"
-      #   next
-      # end
-
-      # target_cell = verify_column(verified_number)
-      # return target_cell if target_cell
-      # puts 'That column is full! Please enter another number.'
+      target_cell = board.find_column_cell(verified_number)
+      return target_cell if target_cell
+      puts 'That column is full! Please enter another number.'
     end
   end
 

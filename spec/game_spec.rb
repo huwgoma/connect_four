@@ -61,10 +61,18 @@ describe Game do
     subject(:game_input) { described_class.new(board) }
     let(:board) { instance_double(Board) }
 
-    context 'when the user enters a valid number' do
+    before do
+      #allow(board).to receive(:find_column_cell)  
+      #allow(game_input).to receive(:puts).with("#{game_input.current_player.name}, please enter a number (1-7) where you would like to place your piece.")
+    end
 
-      xit 'does not put the number error message' do
+    context 'when the user enters a valid number' do
+      before do
         allow(game_input).to receive(:gets).and_return('3')
+        allow(board).to receive(:find_column_cell).and_return(@cells[6])
+      end
+
+      it 'does not put the number error message' do
         number_error = "Please enter a valid number between 1-7!"
         expect(game_input).to_not receive(:puts).with(number_error)
         game_input.player_input
@@ -74,79 +82,74 @@ describe Game do
     context 'when the user enters an invalid input twice, then a valid input' do
       before do
         allow(game_input).to receive(:puts)
-        # allow(game_input).to receive(:gets).and_return('0', '0', '3')
-        allow(game_input).to receive(:gets).and_return('3')
+        allow(game_input).to receive(:gets).and_return('0', '0', '3')
+        allow(board).to receive(:find_column_cell).and_return(true)
       end
 
-      xit 'puts the number error message twice' do  
+      it 'loops twice; puts the number error message twice' do  
         number_error = "Please enter a valid number between 1-7!"
         expect(game_input).to receive(:puts).with(number_error).twice
         game_input.player_input
       end
 
-      xit 'calls #verify_column once when the number is valid' do
-        expect(game_input).to receive(:verify_column).with(3).once
+      it 'calls Board#find_column_cell once when the number is valid' do
+        verified_number = 3
+        expect(board).to receive(:find_column_cell).with(verified_number).once
         game_input.player_input
       end
     end
 
-
-
-
-
     context 'when given a valid number but the column is full' do
       context 'given an invalid column twice, then a valid column' do
         before do
-          allow(game_input).to receive(:gets).and_return('0', '0', '3')
-          allow(board).to receive(:find_column)
-          allow(board).to receive(:find_lowest_cell).and_return(nil, nil, @cells[6])  
+          allow(game_input).to receive(:puts)
+          allow(game_input).to receive(:gets).and_return('1', '1', '3')
+          allow(board).to receive(:find_column_cell).and_return(nil, nil, true)
         end
 
-        xit 'puts the column full error message twice' do
+        it 'loops twice; puts the column full error message twice' do
           column_error = 'That column is full! Please enter another number.'
-          expect(game_input).to receive(:puts).with(column_error)
+          expect(game_input).to receive(:puts).with(column_error).twice
+          game_input.player_input
         end
-
-        
-      end
-      
-    end
-  end
-
-
-
-
-
-  describe '#verify_column' do
-    subject(:game_verify_column) { described_class.new(board) }
-    let(:board) { instance_double(Board) }
-
-    context 'when given a valid number between 1-7' do
-      before do
-        allow(board).to receive(:find_column).and_return([ [@cells[0]], [@cells[1]], [@cells[2]] ])
-        allow(board).to receive(:find_lowest_cell).and_return(@cells[0])
-      end
-
-      it 'does not return nil (yet); sends #find_column and #find_lowest_cell to Board' do
-        valid_input = 1
-        expect(board).to receive(:find_column).with(valid_input - 1).and_return([ [@cells[0]], [@cells[1]], [@cells[2]] ])
-        expect(board).to receive(:find_lowest_cell).and_return(@cells[0])
-        game_verify_column.verify_column(valid_input)
-      end
-    end
-
-    context 'when given a valid number between 1-7, but the column is full' do
-      before do
-        allow(board).to receive(:find_column)
-        allow(board).to receive(:find_lowest_cell).and_return(nil)  
-      end
-
-      it 'returns nil' do
-        input = 1
-        expect(game_verify_column.verify_column(input)).to be_nil
       end
     end
   end
+
+
+
+
+
+  # describe '#verify_column' do
+  #   subject(:game_verify_column) { described_class.new(board) }
+  #   let(:board) { instance_double(Board) }
+
+  #   context 'when given a valid number between 1-7' do
+  #     before do
+  #       allow(board).to receive(:find_column).and_return([ [@cells[0]], [@cells[1]], [@cells[2]] ])
+  #       allow(board).to receive(:find_lowest_cell).and_return(@cells[0])
+  #     end
+
+  #     it 'does not return nil (yet); sends #find_column and #find_lowest_cell to Board' do
+  #       valid_input = 1
+  #       expect(board).to receive(:find_column).with(valid_input - 1).and_return([ [@cells[0]], [@cells[1]], [@cells[2]] ])
+  #       expect(board).to receive(:find_lowest_cell).and_return(@cells[0])
+  #       game_verify_column.verify_column(valid_input)
+  #     end
+  #   end
+
+  #   context 'when given a valid number between 1-7, but the column is full' do
+  #     before do
+  #       allow(board).to receive(:find_column)
+  #       allow(board).to receive(:find_lowest_cell).and_return(nil)  
+  #     end
+
+  #     it 'returns nil' do
+  #       input = 1
+  #       expect(game_verify_column.verify_column(input)).to be_nil
+  #     end
+  #   end
+  # end
 
   describe '#verify_number' do
     subject(:game_verify_number) { described_class.new }
@@ -165,32 +168,3 @@ describe Game do
     end
   end
 end
-
-
-
-
-# context 'when the user enters a valid input (3)' do
-#   before do
-#     valid_input = '3'
-#     allow(game_input).to receive(:gets).and_return(valid_input)
-    
-#   end
-
-#   xit 'returns the target cell and does not display the error message' do
-#     expect
-#   end
-# end
-
-# context 'when the user enters an invalid input' do
-#   before do
-#     invalid_input = '0'
-#     allow(game_input).to receive(:gets).and_return(invalid_input)
-#     allow(game_input).to receive(:verify_number).and_return(false)
-#   end
-
-#   it 'puts an error message' do
-#     error_message = "Please enter a valid number between 1-7!"
-#     expect(game_input).to receive(:puts).with(error_message)
-#     game_input.player_input
-#   end
-# end
