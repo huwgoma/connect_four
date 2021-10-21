@@ -3,7 +3,7 @@
 class Board
   attr_reader :cells, :x, :y
 
-  def initialize(x = 6, y =7)
+  def initialize(x = 7, y = 6)
     @x = x
     @y = y
     @cells = create_cells(@x, @y)
@@ -11,9 +11,9 @@ class Board
 
   def display
     cell_display_order = rearrange_cells(@cells)
-    
+    binding.pry
     cell_display_order.size.times do |i|
-      print "\n\t======================\n\t|" if i % (y-1) == 0
+      print "\n\t======================\n\t|" if i % (x) == 0
       print " #{cell_display_order[i].value} |"
     end
     print "\n\t======================\n\t"
@@ -64,7 +64,8 @@ class Cell
   def initialize(x, y)
     @x = x
     @y = y
-    @value = "#{x}, #{y}"
+    #@value = nil
+    @value = "#{x},#{y}"
   end
 
   def update_value(symbol)
