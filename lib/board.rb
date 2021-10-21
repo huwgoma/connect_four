@@ -34,6 +34,10 @@ class Board
     cells
   end
 
+  def find_column_cell(number)
+    target_column = find_column(number - 1)
+    find_lowest_cell(target_column)
+  end
 
   def find_column(x)
     @cells.select { |cell| cell.x == x }

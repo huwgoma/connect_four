@@ -62,12 +62,8 @@ describe Game do
     let(:board) { instance_double(Board) }
 
     context 'when the user enters a valid number' do
-      before do
-        allow(board).to receive(:find_column)
-        allow(board).to receive(:find_lowest_cell)
-      end
 
-      it 'does not put the number error message' do
+      xit 'does not put the number error message' do
         allow(game_input).to receive(:gets).and_return('3')
         number_error = "Please enter a valid number between 1-7!"
         expect(game_input).to_not receive(:puts).with(number_error)
@@ -82,13 +78,13 @@ describe Game do
         allow(game_input).to receive(:gets).and_return('3')
       end
 
-      it 'puts the number error message twice' do  
+      xit 'puts the number error message twice' do  
         number_error = "Please enter a valid number between 1-7!"
         expect(game_input).to receive(:puts).with(number_error).twice
         game_input.player_input
       end
 
-      it 'calls #verify_column once when the number is valid' do
+      xit 'calls #verify_column once when the number is valid' do
         expect(game_input).to receive(:verify_column).with(3).once
         game_input.player_input
       end

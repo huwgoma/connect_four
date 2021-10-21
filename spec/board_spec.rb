@@ -4,6 +4,18 @@ require_relative '../lib/player'
 require_relative '../lib/board'
 
 describe Board do
+  before do
+    @cells = []
+    3.times do |i|
+      3.times do |j|
+        @cells << instance_double(Cell, x:i, y:j, value:nil)
+        # [[0, 0], [0, 1], [0, 2] - Column 1
+        #  [1, 0], [1, 1], [1, 2] - Column 2
+        #  [2, 0], [2, 1], [2, 2]] -Column 3
+      end
+    end
+  end
+
   describe '#initialize' do
     # Initialize - Do not need to test, but test inside methods
   end
@@ -33,36 +45,28 @@ describe Board do
   describe '#rearrange_cells' do
     subject(:board_rearrange) { described_class.new }
     context 'given an Array of Cells sorted bottom-up, left-right' do
-      before do
-        x = 3
-        y = 3
-        @cells_before = []
-        x.times do |i|
-          y.times do |j|
-            @cells_before << instance_double(Cell, x:i, y:j)
-            # [[0, 0], [0, 1], [0, 2] - Column 1
-            #  [1, 0], [1, 1], [1, 2] - Column 2
-            #  [2, 0], [2, 1], [2, 2]] -Column 3
-          end
-        end
-      end
-
+      # [[0, 0], [0, 1], [0, 2] - Column 1
+      #  [1, 0], [1, 1], [1, 2] - Column 2
+      #  [2, 0], [2, 1], [2, 2]] -Column 3
       it 'returns an Array sorted left-right, top-down' do
         # [[0, 2], [1, 2], [2, 2]
         #  [0, 1], [1, 1], [2, 1]
         #  [0, 0], [1, 0], [2, 0]]
-        cells_after = [@cells_before[2], @cells_before[5], @cells_before[8],
-          @cells_before[1], @cells_before[4], @cells_before[7],
-          @cells_before[0], @cells_before[3], @cells_before[6]]
+        cells_after = [@cells[2], @cells[5], @cells[8],
+          @cells[1], @cells[4], @cells[7],
+          @cells[0], @cells[3], @cells[6]]
 
-        expect(board_rearrange.rearrange_cells(@cells_before)).to eq(cells_after)
+        expect(board_rearrange.rearrange_cells(@cells)).to eq(cells_after)
       end
     end
   end
 
+  describe '#find_column_cell' do
+    # Script Method - Test all inside methods
+    subject(:board_column_room) { described_class.new }
+  end
 
 
-  
   describe '#find_column' do
     subject(:board_column) { described_class.new }
     context 'when given an x value' do
