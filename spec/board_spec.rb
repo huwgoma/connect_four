@@ -128,7 +128,16 @@ describe Cell do
   end
 
   describe '#update_value' do
+    x = 2
+    y = 0
+    subject (:cell_update) { described_class.new(x, y) }
     
+    context 'when given the current player symbol' do
+      it 'updates @value to the symbol' do
+        symbol = '⚫'
+        expect { cell_update.update_value(symbol) }.to change { cell_update.value }.to(symbol)
+      end
+    end
   end
 end
 

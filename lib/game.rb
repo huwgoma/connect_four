@@ -24,6 +24,7 @@ class Game
   def game_loop
     target_cell = player_input
     board.update_cells(target_cell, current_player.symbol)
+    board.display
   end
 
   def player_input

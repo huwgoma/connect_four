@@ -11,13 +11,13 @@ class Board
 
   def display
     cell_display_order = rearrange_cells(@cells)
-    
     cell_display_order.size.times do |i|
       print "\n\t======================\n\t|" if i % y == 0
       print " #{cell_display_order[i].value} |"
     end
     print "\n\t======================\n\t"
     @y.times { |i| print " #{i + 1} " }
+    #binding.pry
     puts "\n\n"
   end
 
@@ -67,6 +67,6 @@ class Cell
   end
 
   def update_value(symbol)
-
+    @value = symbol
   end
 end
