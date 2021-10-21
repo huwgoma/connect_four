@@ -49,7 +49,13 @@ class Board
     end
     return
   end
+
+  def update_cells(cell, symbol)
+    cell.update_value(symbol)
+  end
 end
+
+
 
 class Cell
   attr_reader :x, :y, :value
@@ -58,5 +64,9 @@ class Cell
     @x = x
     @y = y
     @value = nil
+  end
+
+  def update_value(symbol)
+
   end
 end

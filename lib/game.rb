@@ -23,10 +23,11 @@ class Game
 
   def game_loop
     target_cell = player_input
+    board.update_cells(target_cell, current_player.symbol)
   end
 
   def player_input
-    puts "#{@current_player.name}, please enter a number (1-7) where you would like to place your piece."
+    puts "#{current_player.name}, please enter a number (1-7) where you would like to place your piece."
     loop do
       user_input = gets.chomp.to_i
       verified_number = verify_number(user_input)

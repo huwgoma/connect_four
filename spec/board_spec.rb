@@ -63,9 +63,7 @@ describe Board do
 
   describe '#find_column_cell' do
     # Script Method - Test all inside methods
-    subject(:board_column_room) { described_class.new }
   end
-
 
   describe '#find_column' do
     subject(:board_column) { described_class.new }
@@ -107,12 +105,31 @@ describe Board do
         expect(board_lowest.find_lowest_cell(column)).to be_nil
       end
     end
-  
   end
   
+  describe '#update_cells' do
+    subject(:board_update) { described_class.new }
+    let(:target_cell) { instance_double(Cell, x:2, y:0, value:nil) }
+
+    context 'when given the target cell to change and the symbol to change to' do
+      it 'sends a message to the target Cell to update its value' do
+        current_symbol = '⚫'
+        expect(target_cell).to receive(:update_value).with(current_symbol)
+        board_update.update_cells(target_cell, current_symbol)
+      end
+    end
+  end
 
 end
 
+describe Cell do
+  describe '#initialize' do
+    # Initialize - Do not need to test
+  end
 
+  describe '#update_value' do
+    
+  end
+end
 
 

@@ -40,7 +40,8 @@ describe Game do
 
   describe '#game_loop' do
     # Script Method - Test all inside methods
-
+    # Get the target cell (the cell to place the piece into) from #player_input
+    # 
   end
 
   # [[0, 0], [0, 1], [0, 2] - Column 1
