@@ -18,13 +18,17 @@ class Game
 
   def play
     board.display
-    #game_loop
+    loop do
+      game_loop 
+    end
+    
   end
 
   def game_loop
     target_cell = player_input
     board.update_cells(target_cell, current_player.symbol)
     board.display
+    switch_current_player #unless game_over?
   end
 
   def player_input

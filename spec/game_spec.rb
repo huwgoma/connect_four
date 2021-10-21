@@ -107,41 +107,6 @@ describe Game do
     end
   end
 
-
-
-
-
-  # describe '#verify_column' do
-  #   subject(:game_verify_column) { described_class.new(board) }
-  #   let(:board) { instance_double(Board) }
-
-  #   context 'when given a valid number between 1-7' do
-  #     before do
-  #       allow(board).to receive(:find_column).and_return([ [@cells[0]], [@cells[1]], [@cells[2]] ])
-  #       allow(board).to receive(:find_lowest_cell).and_return(@cells[0])
-  #     end
-
-  #     it 'does not return nil (yet); sends #find_column and #find_lowest_cell to Board' do
-  #       valid_input = 1
-  #       expect(board).to receive(:find_column).with(valid_input - 1).and_return([ [@cells[0]], [@cells[1]], [@cells[2]] ])
-  #       expect(board).to receive(:find_lowest_cell).and_return(@cells[0])
-  #       game_verify_column.verify_column(valid_input)
-  #     end
-  #   end
-
-  #   context 'when given a valid number between 1-7, but the column is full' do
-  #     before do
-  #       allow(board).to receive(:find_column)
-  #       allow(board).to receive(:find_lowest_cell).and_return(nil)  
-  #     end
-
-  #     it 'returns nil' do
-  #       input = 1
-  #       expect(game_verify_column.verify_column(input)).to be_nil
-  #     end
-  #   end
-  # end
-
   describe '#verify_number' do
     subject(:game_verify_number) { described_class.new }
     context 'when given a integer between 1 and 7' do
@@ -157,5 +122,9 @@ describe Game do
         expect(game_verify_number.verify_number(input)).to be_nil
       end
     end
+  end
+
+  describe '#switch_current_player' do
+    
   end
 end

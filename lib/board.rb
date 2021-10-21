@@ -11,13 +11,15 @@ class Board
 
   def display
     cell_display_order = rearrange_cells(@cells)
-    binding.pry
+    
     cell_display_order.size.times do |i|
-      print "\n\t======================\n\t|" if i % (x) == 0
-      print " #{cell_display_order[i].value} |"
+      print "\n\t======================\n\t|" if i % x == 0
+      cell_value = cell_display_order[i].value
+      print " #{cell_value} |" if cell_value.nil?
+      print "#{cell_value}|" if cell_value
     end
     print "\n\t======================\n\t"
-    @y.times { |i| print " #{i + 1} " }
+    @x.times { |i| print " #{i + 1} " }
   
     puts "\n\n"
   end
@@ -64,8 +66,8 @@ class Cell
   def initialize(x, y)
     @x = x
     @y = y
-    #@value = nil
-    @value = "#{x},#{y}"
+    @value = nil
+    #@value = "#{x},#{y}"
   end
 
   def update_value(symbol)

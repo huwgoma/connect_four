@@ -6,6 +6,8 @@ class Player
   def initialize(name, id)
     @name = name
     @id = id
-    @symbol = @id == 1 ? '⚫' : '⚪'
+    @symbol = @id == 1 ? '◯' : '⬤'
   end
 end
+
+#⬤
