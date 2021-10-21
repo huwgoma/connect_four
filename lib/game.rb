@@ -18,7 +18,7 @@ class Game
 
   def play
     board.display
-    game_loop
+    #game_loop
   end
 
   def game_loop
