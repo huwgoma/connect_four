@@ -41,8 +41,8 @@ class Game
     end
   end
 
-  def verify_column(input)
-    target_column = board.find_column(input - 1)
+  def verify_column(number)
+    target_column = board.find_column(number - 1)
     board.find_lowest_cell(target_column)
   end
 

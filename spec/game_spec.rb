@@ -73,7 +73,8 @@ describe Game do
     context 'when the user enters an invalid input twice, then a valid input' do
       before do
         allow(game_input).to receive(:puts)
-        allow(game_input).to receive(:gets).and_return('0', '0', '3')
+        # allow(game_input).to receive(:gets).and_return('0', '0', '3')
+        allow(game_input).to receive(:gets).and_return('3')
       end
 
       # it 'puts the number error message twice' do  
