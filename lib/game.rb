@@ -42,8 +42,6 @@ class Game
     end
   end
 
-  
-
   def verify_number(number)
     return number if number.between?(1, 7)
   end

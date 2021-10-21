@@ -41,21 +41,11 @@ describe Game do
   describe '#game_loop' do
     # Script Method - Test all inside methods
 
-    # get player input (eg. 7)
-    # target_cell = verify input (7)
-    #   verify_number(7): make sure input is a number between 1-7 
-    #   verify_column(7-1): make sure the input column is not full
-    # return target_cell if target_cell
-    # puts 'That column is full'
-
-      # [[0, 0], [0, 1], [0, 2] - Column 1
-      #  [1, 0], [1, 1], [1, 2] - Column 2
-      #  [2, 0], [2, 1], [2, 2]] -Column 3
   end
 
-  
-
-
+  # [[0, 0], [0, 1], [0, 2] - Column 1
+  #  [1, 0], [1, 1], [1, 2] - Column 2
+  #  [2, 0], [2, 1], [2, 2]] -Column 3
 
   describe '#player_input' do
     subject(:game_input) { described_class.new(board) }
