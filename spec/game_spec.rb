@@ -61,14 +61,14 @@ describe Game do
     subject(:game_input) { described_class.new(board) }
     let(:board) { instance_double(Board).as_null_object }
 
-    context 'when the user enters a valid number' do
-      it 'does not put the number error message' do
-        allow(game_input).to receive(:gets).and_return('3')
-        number_error = "Please enter a valid number between 1-7!"
-        expect(game_input).to_not receive(:puts).with(number_error)
-        game_input.player_input
-      end
-    end
+    # context 'when the user enters a valid number' do
+    #   it 'does not put the number error message' do
+    #     allow(game_input).to receive(:gets).and_return('3')
+    #     number_error = "Please enter a valid number between 1-7!"
+    #     expect(game_input).to_not receive(:puts).with(number_error)
+    #     game_input.player_input
+    #   end
+    # end
 
     context 'when the user enters an invalid input twice, then a valid input' do
       before do
@@ -76,13 +76,13 @@ describe Game do
         allow(game_input).to receive(:gets).and_return('0', '0', '3')
       end
 
-      it 'puts the number error message twice' do  
-        number_error = "Please enter a valid number between 1-7!"
-        expect(game_input).to receive(:puts).with(number_error).twice
-        game_input.player_input
-      end
+      # it 'puts the number error message twice' do  
+      #   number_error = "Please enter a valid number between 1-7!"
+      #   expect(game_input).to receive(:puts).with(number_error).twice
+      #   game_input.player_input
+      # end
 
-      it 'calls #verify_column once when input is valid' do
+      it 'calls #verify_column once when the number is valid' do
         expect(game_input).to receive(:verify_column).with(3).once
         game_input.player_input
       end
@@ -92,21 +92,23 @@ describe Game do
 
 
 
-    context 'when given a valid number but the column is full' do
-      context 'given an invalid column twice, then a valid column' do
-        before do
-          allow(game_input).to receive(:gets).and_return('0', '0', '3')
-          allow(board).to receive(:find_column)
-          allow(board).to receive(:find_lowest_cell).and_return(nil, nil, @cells[6])  
-        end
+    # context 'when given a valid number but the column is full' do
+    #   context 'given an invalid column twice, then a valid column' do
+    #     before do
+    #       allow(game_input).to receive(:gets).and_return('0', '0', '3')
+    #       allow(board).to receive(:find_column)
+    #       allow(board).to receive(:find_lowest_cell).and_return(nil, nil, @cells[6])  
+    #     end
 
-        xit 'puts the column full error message twice' do
-          column_error = 'That column is full! Please enter another number.'
-          expect(game_input).to receive(:puts).with(column_error)
-        end
-      end
+    #     xit 'puts the column full error message twice' do
+    #       column_error = 'That column is full! Please enter another number.'
+    #       expect(game_input).to receive(:puts).with(column_error)
+    #     end
+
+        
+    #   end
       
-    end
+    # end
   end
 
 

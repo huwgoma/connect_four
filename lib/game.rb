@@ -34,17 +34,16 @@ class Game
         puts "Please enter a valid number between 1-7!"
         next
       end
+
       target_cell = verify_column(verified_number)
-      
       return target_cell if target_cell
       puts 'That column is full! Please enter another number.'
-      
     end
   end
 
   def verify_column(input)
     target_column = board.find_column(input - 1)
-    target_cell = board.find_lowest_cell(target_column)
+    board.find_lowest_cell(target_column)
   end
 
   def verify_number(number)
