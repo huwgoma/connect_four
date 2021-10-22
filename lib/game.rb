@@ -51,4 +51,8 @@ class Game
   def verify_number(number)
     return number if number.between?(1, 7)
   end
+
+  def switch_current_player
+    @current_player = @current_player.id == 1 ? @player_two : @player_one
+  end
 end

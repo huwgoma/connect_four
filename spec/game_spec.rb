@@ -125,6 +125,21 @@ describe Game do
   end
 
   describe '#switch_current_player' do
-    
+    subject(:game_switch_player) { described_class.new }
+    let(:player_one) { instance_double(Player, id:1) }
+    let(:player_two) { instance_double(Player, id:2) }
+
+    context 'when the @current_player is player 1' do
+      before do
+        game_switch_player.instance_variable_set(:@current_player, player_one)
+        game_switch_player.instance_variable_set(:@player_one, player_one)
+        game_switch_player.instance_variable_set(:@player_two, player_two)
+      end
+
+      it 'changes the @current_player to player 2' do
+        expect { game_switch_player.switch_current_player }.to change { game_switch_player.current_player }.to(player_two)
+
+      end
+    end
   end
 end

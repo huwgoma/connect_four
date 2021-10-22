@@ -15,8 +15,7 @@ class Board
     cell_display_order.size.times do |i|
       print "\n\t======================\n\t|" if i % x == 0
       cell_value = cell_display_order[i].value
-      print " #{cell_value} |" if cell_value.nil?
-      print "#{cell_value}|" if cell_value
+      print cell_value.nil? ? " #{cell_value} |" : "#{cell_value} |"
     end
     print "\n\t======================\n\t"
     @x.times { |i| print " #{i + 1} " }
