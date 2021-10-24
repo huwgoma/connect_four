@@ -25,19 +25,13 @@ describe Board do
 
     context 'for a 6x7 grid' do
       before do
-        @x = 6
-        @y = 7
+        @x = 7
+        @y = 6
       end
 
       it 'sends a message to Cell 42 times to create 42 cells' do
         expect(Cell).to receive(:new).exactly(@x*@y).times
         Board.new
-      end
-
-      it 'returns an array of 4 Cell objects' do
-        cells = Board.new.create_cells(@x, @y)
-        expect(cells).to be_an(Array)
-        expect(cells).to all(be_a(Cell))
       end
     end
   end
@@ -120,11 +114,30 @@ describe Board do
     end
   end
 
+  describe '#game_over?' do
+    
+  end
+
 end
 
 describe Cell do
   describe '#initialize' do
     # Initialize - Do not need to test
+  end
+
+  describe '::find_cell' do
+    context 'when given an x and y value' do
+      before do
+        @x = 0
+        @y = 1
+      end
+
+      it 'returns the Cell object with that x and y value' do
+        return_cell = Cell.find_cell(@x, @y)
+        expect(return_cell.x).to eq(@x)
+        expect(return_cell.y).to eq(@y)
+      end
+    end
   end
 
   describe '#update_value' do
@@ -139,6 +152,9 @@ describe Cell do
       end
     end
   end
+
+  
+  
 end
 
 

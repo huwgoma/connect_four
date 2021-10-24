@@ -18,9 +18,8 @@ class Game
 
   def play
     board.display
-    loop do
-      game_loop 
-    end
+    
+    game_loop #until board.game_over?
     
   end
 
@@ -55,4 +54,6 @@ class Game
   def switch_current_player
     @current_player = @current_player.id == 1 ? @player_two : @player_one
   end
+
+  
 end

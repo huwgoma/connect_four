@@ -138,8 +138,9 @@ describe Game do
 
       it 'changes the @current_player to player 2' do
         expect { game_switch_player.switch_current_player }.to change { game_switch_player.current_player }.to(player_two)
-
       end
     end
   end
+
+  
 end

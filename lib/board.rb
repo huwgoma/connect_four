@@ -6,7 +6,8 @@ class Board
   def initialize(x = 7, y = 6)
     @x = x
     @y = y
-    @cells = create_cells(@x, @y)
+    create_cells(@x, @y)
+    @cells = Cell.cells
   end
 
   def display
@@ -27,13 +28,12 @@ class Board
     cells.sort_by { |cell| [cell.y, -(cell.x)] }.reverse
   end
 
-  def create_cells(x = @x, y = @y, cells = [])
+  def create_cells(x = @x, y = @y)
     x.times do |i|
       y.times do |j|
-        cells << Cell.new(i, j)
+        Cell.new(i, j)
       end
     end
-    cells
   end
 
   def find_column_cell(number)
@@ -55,6 +55,10 @@ class Board
   def update_cells(cell, symbol)
     cell.update_value(symbol)
   end
+
+  def game_over?
+    
+  end
 end
 
 
@@ -62,11 +66,22 @@ end
 class Cell
   attr_reader :x, :y, :value
 
+  @@cells = []
+
   def initialize(x, y)
     @x = x
     @y = y
     @value = nil
     #@value = "#{x},#{y}"
+    @@cells << self
+  end
+
+  def self.find_cell(x, y)
+    @@cells.find { |cell| cell.x == x && cell.y == y }
+  end
+
+  def self.cells
+    @@cells
   end
 
   def update_value(symbol)
