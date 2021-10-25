@@ -6,12 +6,13 @@ require_relative '../lib/board'
 describe Board do
   before do
     @cells = []
-    3.times do |i|
-      3.times do |j|
+    4.times do |i|
+      4.times do |j|
         @cells << instance_double(Cell, x:i, y:j, value:nil)
-        # [[0, 0], [0, 1], [0, 2] - Column 1
-        #  [1, 0], [1, 1], [1, 2] - Column 2
-        #  [2, 0], [2, 1], [2, 2]] -Column 3
+        # [[0, 0], [0, 1], [0, 2], [0, 3] - Column 1
+        #  [1, 0], [1, 1], [1, 2], [1, 3] - Column 2
+        #  [2, 0], [2, 1], [2, 2], [2, 3] - Column 3
+        #  [3, 0], [3, 1], [3, 2], [3, 3] - Column 4
       end
     end
   end
@@ -39,16 +40,20 @@ describe Board do
   describe '#rearrange_cells' do
     subject(:board_rearrange) { described_class.new }
     context 'given an Array of Cells sorted bottom-up, left-right' do
-      # [[0, 0], [0, 1], [0, 2] - Column 1
-      #  [1, 0], [1, 1], [1, 2] - Column 2
-      #  [2, 0], [2, 1], [2, 2]] -Column 3
+      # [[0, 0], [0, 1], [0, 2], [0, 3] - Column 1
+      #  [1, 0], [1, 1], [1, 2], [1, 3] - Column 2
+      #  [2, 0], [2, 1], [2, 2], [2, 3] - Column 3
+      #  [3, 0], [3, 1], [3, 2], [3, 3] - Column 4
       it 'returns an Array sorted left-right, top-down' do
-        # [[0, 2], [1, 2], [2, 2]
-        #  [0, 1], [1, 1], [2, 1]
-        #  [0, 0], [1, 0], [2, 0]]
-        cells_after = [@cells[2], @cells[5], @cells[8],
-          @cells[1], @cells[4], @cells[7],
-          @cells[0], @cells[3], @cells[6]]
+        # [[0, 3], [1, 3], [2, 3], [3, 3]
+        #  [0, 2], [1, 2], [2, 2], [3, 2]
+        #  [0, 1], [1, 1], [2, 1], [3, 1]
+        #  [0, 0], [1, 0], [2, 0], [3, 0]]
+        cells_after = [
+          @cells[3], @cells[7], @cells[11], @cells[15],
+          @cells[2], @cells[6], @cells[10], @cells[14],
+          @cells[1], @cells[5], @cells[9], @cells[13],
+          @cells[0], @cells[4], @cells[8], @cells[12]]
 
         expect(board_rearrange.rearrange_cells(@cells)).to eq(cells_after)
       end
@@ -115,7 +120,33 @@ describe Board do
   end
 
   describe '#game_over?' do
-    
+    # Iterate through the Cells of the Board 
+    # For each Cell, check if its value is nil 
+    # if it is not, recurse in 4 directions to look for a winning state
+  end
+
+  describe '#search_for_winner' do
+    # Given a Cell and a Direction, recurses in that Direction 
+    # until either a winner is found or a winner is deconfirmed
+    context 'starting at Cell(0,0), recursing UP; Cell(0,0) @value = ⬤' do
+      subject(:board_search_winner) { described_class.new(4, 4) }
+      before do
+        board_search_winner.instance_variable_set(:@cells, @cells)
+        allow(@cells[0]).to receive(:value).and_return('⬤')
+        @up = { x:0, y:1 }
+      end
+      
+      it 'sends ::find to Cell with the coordinates of the next Cell' do
+        x = 0
+        y = 1
+        expect(Cell).to receive(:find).with(x, y)
+        board_search_winner.search_for_winner(@cells[0], @up)
+      end
+      
+      context '' do
+        
+      end
+    end
   end
 
 end
@@ -125,7 +156,7 @@ describe Cell do
     # Initialize - Do not need to test
   end
 
-  describe '::find_cell' do
+  describe '::find' do
     context 'when given an x and y value' do
       before do
         @x = 0
@@ -133,7 +164,7 @@ describe Cell do
       end
 
       it 'returns the Cell object with that x and y value' do
-        return_cell = Cell.find_cell(@x, @y)
+        return_cell = Cell.find(@x, @y)
         expect(return_cell.x).to eq(@x)
         expect(return_cell.y).to eq(@y)
       end
