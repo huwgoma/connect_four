@@ -2,13 +2,14 @@
 require_relative '../lib/game'
 require_relative '../lib/player'
 require_relative '../lib/board'
+require 'pry'
 
 describe Board do
   before do
     @cells = []
     4.times do |i|
       4.times do |j|
-        @cells << instance_double(Cell, x:i, y:j, value:nil)
+        @cells << instance_double(Cell, "#{i}, #{j}", x:i, y:j, value:nil)
         # [[0, 0], [0, 1], [0, 2], [0, 3] - Column 1
         #  [1, 0], [1, 1], [1, 2], [1, 3] - Column 2
         #  [2, 0], [2, 1], [2, 2], [2, 3] - Column 3
@@ -126,26 +127,43 @@ describe Board do
   end
 
   describe '#search_for_winner' do
-    # Given a Cell and a Direction, recurses in that Direction 
-    # until either a winner is found or a winner is deconfirmed
-    context 'starting at Cell(0,0), recursing UP; Cell(0,0) @value = ⬤' do
-      subject(:board_search_winner) { described_class.new(4, 4) }
+    # Given a Cell and a Direction, loop in that direction to check for a winner
+    # Loop until either a winner is found or a winner is deconfirmed
+
+
+
+    context 'starting at Cell(0,0), looping up' do
+      subject(:board_search_up) { described_class.new }
+      
       before do
-        board_search_winner.instance_variable_set(:@cells, @cells)
-        allow(@cells[0]).to receive(:value).and_return('⬤')
-        @up = { x:0, y:1 }
+        @up = { x:0, y: 1 }
       end
-      
-      it 'sends ::find to Cell with the coordinates of the next Cell' do
-        x = 0
-        y = 1
-        expect(Cell).to receive(:find).with(x, y)
-        board_search_winner.search_for_winner(@cells[0], @up)
+
+      context "when Cell(0,0)'s @value is nil" do
+        it 'returns nil' do
+          expect(board_search_up.search_for_winner(@cells[0], @up)).to be_nil
+        end
       end
-      
-      context '' do
+
+      context "when Cell(0,0)'s @value is ⬤" do
+        before do
+          allow(@cells[0]).to receive(:value).and_return('⬤') 
+        end
         
+        it 'sends ::find to Cell with the coordinates of the next cell' do
+          next_x = 0
+          next_y = 1
+          expect(Cell).to receive(:find).with(next_x, next_y)
+          board_search_up.search_for_winner(@cells[0], @up)
+        end
       end
+      
+      
+      
+      
+
+    
+
     end
   end
 

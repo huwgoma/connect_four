@@ -62,8 +62,10 @@ class Board
     end
   end
 
-  def search_for_winner(cell, direction, match_count = 0, match_value = cell.value)
-    next_cell = Cell.find(cell.x + direction[:x], cell.y + direction[:y])
+  def search_for_winner(cell, direction)
+    return if cell.value.nil?
+    Cell.find(cell.x + direction[:x], cell.y + direction[:y])
+    
   end
 end
 
