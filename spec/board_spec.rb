@@ -123,26 +123,62 @@ describe Board do
   describe '#game_over?' do
     # Iterate through the Cells of the Board 
     # For each Cell, check if its value is nil 
-    # if it is not, recurse in 4 directions to look for a winning state
+    # if it is not, loop in 4 directions to look for a winning state
+    # Do any of the 4 directions contain a winning state?
+
+    context 'when the board is freshly created' do
+      subject(:board_fresh) { described_class.new }  
+      
+      before do
+        board_fresh.instance_variable_set(:@cells, @cells)
+      end
+
+      it 'returns false' do
+        expect(board_fresh.game_over?).to be false
+      end
+    end
+
+    context 'when the board is partly filled, but there is no winning state' do
+      subject(:board_no_win) { described_class.new }
+      before do
+        allow(@cells[0]).to receive(:value).and_return('◯')
+        allow(@cells[1]).to receive(:value).and_return('⬤')
+
+        allow(Cell).to receive(:find).and_return(@cells[1], @cells[2], @cells[2], @cells[3])
+        board_no_win.instance_variable_set(:@cells, @cells)
+      end
+
+      it 'returns false' do
+        expect(board_no_win.game_over?).to be false
+      end
+    end
+
+    context "when there is a winning state on the board" do
+      subject(:board_win) { described_class.new }
+      before do
+        allow(@cells[0]).to receive(:value).and_return('◯')
+        allow(@cells[1]).to receive(:value).and_return('◯')
+        allow(@cells[2]).to receive(:value).and_return('◯')
+        allow(@cells[3]).to receive(:value).and_return('◯')
+
+        allow(Cell).to receive(:find).and_return(@cells[1], @cells[2], @cells[3])
+        board_win.instance_variable_set(:@cells, @cells)
+      end
+
+      it 'returns true' do
+        expect(board_win.game_over?).to be true
+      end
+    end
   end
 
-  describe '#search_for_winner' do
+  describe '#winner?' do
     # Given a Cell and a Direction, loop in that direction to check for a winner
     # Loop until either a winner is found or a winner is deconfirmed
-
-
-
     context 'starting at Cell(0,0), looping up' do
       subject(:board_search_up) { described_class.new }
       
       before do
         @up = { x:0, y: 1 }
-      end
-
-      context "when Cell(0,0)'s @value is nil" do
-        it 'returns nil' do
-          expect(board_search_up.search_for_winner(@cells[0], @up)).to be_nil
-        end
       end
 
       context "when Cell(0,0)'s @value is ⬤ and Cell(0, 1)'s value is nil" do
@@ -151,7 +187,7 @@ describe Board do
         end
         
         it 'does not loop; returns false' do
-          expect(board_search_up.search_for_winner(@cells[0], @up)).to be false
+          expect(board_search_up.winner?(@cells[0], @up)).to be false
         end
 
         it 'sends ::find to Cell with the coordinates of the next cell' do
@@ -159,7 +195,7 @@ describe Board do
           next_y = 1
           allow(Cell).to receive(:find).with(next_x, next_y).and_return(@cells[1])
           expect(Cell).to receive(:find).with(next_x, next_y)
-          board_search_up.search_for_winner(@cells[0], @up)
+          board_search_up.winner?(@cells[0], @up)
         end
       end
       
@@ -173,11 +209,11 @@ describe Board do
         it 'completes the loop once, then returns false on the second loop (◯)' do
           allow(Cell).to receive(:find).and_return(@cells[1], @cells[2])
           expect(Cell).to receive(:find).twice
-          board_search_up.search_for_winner(@cells[0], @up)
+          board_search_up.winner?(@cells[0], @up)
         end
 
         it 'returns false' do
-          expect(board_search_up.search_for_winner(@cells[0], @up)).to be false
+          expect(board_search_up.winner?(@cells[0], @up)).to be false
         end
       end
 
@@ -192,23 +228,24 @@ describe Board do
         it 'completes the loop 3 times and returns true' do
           allow(Cell).to receive(:find).and_return(@cells[1], @cells[2], @cells[3])
           expect(Cell).to receive(:find).exactly(3).times
-          board_search_up.search_for_winner(@cells[0], @up)
+          board_search_up.winner?(@cells[0], @up)
         end
 
         it 'returns true' do
           allow(Cell).to receive(:find).and_return(@cells[1], @cells[2], @cells[3])
-          expect(board_search_up.search_for_winner(@cells[0], @up)).to be true
+          expect(board_search_up.winner?(@cells[0], @up)).to be true
         end
       end
-      
-      
-      
 
-    
-
+      context "when the starting cell is at the edge of the board" do
+        context "starting at Cell(0, 3), looking up" do
+          it 'returns nil' do
+            expect(board_search_up.winner?(@cells[3], @up)).to be_nil
+          end
+        end
+      end
     end
   end
-
 end
 
 describe Cell do

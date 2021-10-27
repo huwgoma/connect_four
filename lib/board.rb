@@ -58,16 +58,29 @@ class Board
 
   def game_over?
     @cells.each do |cell|
-
+      next if cell.value.nil?
+      winner = winner?(cell, DIRECTIONS[:up]) || 
+        winner?(cell, DIRECTIONS[:right]) || 
+        winner?(cell, DIRECTIONS[:up_left]) || 
+        winner?(cell, DIRECTIONS[:up_right])
+      return winner if winner
     end
+    false
   end
 
-  def search_for_winner(cell, direction)
-    return if cell.value.nil?
+  DIRECTIONS = {
+    up: { x:0, y:1 },
+    right: { x:1, y:0 },
+    up_left: { x:-1, y:1 },
+    up_right: { x:1, y:1 }
+  }
+
+  def winner?(cell, direction)
     match_value = cell.value
     match_count = 1
     until match_count >= 4
       cell = Cell.find(cell.x + direction[:x], cell.y + direction[:y])
+      return if cell.nil?
       return false unless cell.value == match_value
       match_count += 1
     end
