@@ -61,6 +61,6 @@ class Game
   def replay
     puts "Play again? (Y/N)"
     input = gets.chomp.downcase
-    
+    input == 'y' ? Game.new.play : puts('Thanks for playing!')
   end
 end
