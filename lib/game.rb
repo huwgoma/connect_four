@@ -18,16 +18,15 @@ class Game
 
   def play
     board.display
-    
-    game_loop #until board.game_over?
-    
+    game_loop until board.game_over?
+    game_end
   end
 
   def game_loop
     target_cell = player_input
     board.update_cells(target_cell, current_player.symbol)
     board.display
-    switch_current_player #unless game_over?
+    switch_current_player unless board.game_over?
   end
 
   def player_input
@@ -55,5 +54,13 @@ class Game
     @current_player = @current_player.id == 1 ? @player_two : @player_one
   end
 
-  
+  def game_end
+    puts board.winner? ? "#{current_player.name} wins!" : "It's a tie!"
+  end
+
+  def replay
+    puts "Play again? (Y/N)"
+    input = gets.chomp.downcase
+    
+  end
 end

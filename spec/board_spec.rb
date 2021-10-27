@@ -120,7 +120,42 @@ describe Board do
     end
   end
 
-  describe '#game_over?' do
+  describe '#full?' do
+    context 'when all Cells of the Board have a non-nil @value' do
+      subject(:board_full) { described_class.new }
+      
+      before do
+        @cells.each do |cell|
+          allow(cell).to receive(:value).and_return('⚫')
+        end
+        board_full.instance_variable_set(:@cells, @cells)
+      end
+
+      it 'returns true' do
+        expect(board_full.full?).to be true
+      end
+    end
+
+    context 'when at least one Board Cell has a nil @value' do
+      subject(:board_not_full) { described_class.new }
+      
+      before do
+        @cells.each do |cell|
+          allow(cell).to receive(:value).and_return('⚫')
+        end
+        allow(@cells[3]).to receive(:value).and_return(nil)
+        board_not_full.instance_variable_set(:@cells, @cells)
+      end
+
+      it 'returns false' do
+        expect(board_not_full.full?).to be false
+      end
+    end
+  end
+
+
+
+  describe '#winner?' do
     # Iterate through the Cells of the Board 
     # For each Cell, check if its value is nil 
     # if it is not, loop in 4 directions to look for a winning state
@@ -134,7 +169,7 @@ describe Board do
       end
 
       it 'returns false' do
-        expect(board_fresh.game_over?).to be false
+        expect(board_fresh.winner?).to be false
       end
     end
 
@@ -149,7 +184,7 @@ describe Board do
       end
 
       it 'returns false' do
-        expect(board_no_win.game_over?).to be false
+        expect(board_no_win.winner?).to be false
       end
     end
 
@@ -166,12 +201,12 @@ describe Board do
       end
 
       it 'returns true' do
-        expect(board_win.game_over?).to be true
+        expect(board_win.winner?).to be true
       end
     end
   end
 
-  describe '#winner?' do
+  describe '#direction_win?' do
     # Given a Cell and a Direction, loop in that direction to check for a winner
     # Loop until either a winner is found or a winner is deconfirmed
     context 'starting at Cell(0,0), looping up' do
@@ -187,7 +222,7 @@ describe Board do
         end
         
         it 'does not loop; returns false' do
-          expect(board_search_up.winner?(@cells[0], @up)).to be false
+          expect(board_search_up.direction_win?(@cells[0], @up)).to be false
         end
 
         it 'sends ::find to Cell with the coordinates of the next cell' do
@@ -195,7 +230,7 @@ describe Board do
           next_y = 1
           allow(Cell).to receive(:find).with(next_x, next_y).and_return(@cells[1])
           expect(Cell).to receive(:find).with(next_x, next_y)
-          board_search_up.winner?(@cells[0], @up)
+          board_search_up.direction_win?(@cells[0], @up)
         end
       end
       
@@ -209,11 +244,11 @@ describe Board do
         it 'completes the loop once, then returns false on the second loop (◯)' do
           allow(Cell).to receive(:find).and_return(@cells[1], @cells[2])
           expect(Cell).to receive(:find).twice
-          board_search_up.winner?(@cells[0], @up)
+          board_search_up.direction_win?(@cells[0], @up)
         end
 
         it 'returns false' do
-          expect(board_search_up.winner?(@cells[0], @up)).to be false
+          expect(board_search_up.direction_win?(@cells[0], @up)).to be false
         end
       end
 
@@ -228,12 +263,12 @@ describe Board do
         it 'completes the loop 3 times and returns true' do
           allow(Cell).to receive(:find).and_return(@cells[1], @cells[2], @cells[3])
           expect(Cell).to receive(:find).exactly(3).times
-          board_search_up.winner?(@cells[0], @up)
+          board_search_up.direction_win?(@cells[0], @up)
         end
 
         it 'returns true' do
           allow(Cell).to receive(:find).and_return(@cells[1], @cells[2], @cells[3])
-          expect(board_search_up.winner?(@cells[0], @up)).to be true
+          expect(board_search_up.direction_win?(@cells[0], @up)).to be true
         end
       end
 
@@ -245,7 +280,7 @@ describe Board do
           end
 
           it 'returns false' do
-            expect(board_search_up.winner?(@cells[3], @up)).to be false
+            expect(board_search_up.direction_win?(@cells[3], @up)).to be false
           end
         end
 
@@ -257,7 +292,7 @@ describe Board do
           end
 
           it 'returns false' do
-            expect(board_search_up.winner?(@cells[2], @up)).to be false
+            expect(board_search_up.direction_win?(@cells[2], @up)).to be false
           end
         end
       end

@@ -57,12 +57,16 @@ class Board
   end
 
   def game_over?
+    winner? || full?
+  end
+
+  def winner?
     @cells.each do |cell|
       next if cell.value.nil?
-      winner = winner?(cell, DIRECTIONS[:up]) || 
-        winner?(cell, DIRECTIONS[:right]) || 
-        winner?(cell, DIRECTIONS[:up_left]) || 
-        winner?(cell, DIRECTIONS[:up_right])
+      winner = direction_win?(cell, DIRECTIONS[:up]) || 
+        direction_win?(cell, DIRECTIONS[:right]) || 
+        direction_win?(cell, DIRECTIONS[:up_left]) || 
+        direction_win?(cell, DIRECTIONS[:up_right])
       return winner if winner
     end
     false
@@ -75,7 +79,7 @@ class Board
     up_right: { x:1, y:1 }
   }
 
-  def winner?(cell, direction)
+  def direction_win?(cell, direction)
     match_value = cell.value
     match_count = 1
     until match_count >= 4
@@ -85,6 +89,12 @@ class Board
       match_count += 1
     end
     true
+  end
+
+  def full?
+    @cells.all? do |cell|
+      cell.value
+    end
   end
 end
 
