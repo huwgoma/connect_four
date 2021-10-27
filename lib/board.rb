@@ -64,11 +64,16 @@ class Board
 
   def search_for_winner(cell, direction)
     return if cell.value.nil?
-    Cell.find(cell.x + direction[:x], cell.y + direction[:y])
-    
+    match_value = cell.value
+    match_count = 1
+    until match_count >= 4
+      cell = Cell.find(cell.x + direction[:x], cell.y + direction[:y])
+      return false unless cell.value == match_value
+      match_count += 1
+    end
+    true
   end
 end
-
 
 
 class Cell

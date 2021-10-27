@@ -145,19 +145,61 @@ describe Board do
         end
       end
 
-      context "when Cell(0,0)'s @value is ⬤" do
+      context "when Cell(0,0)'s @value is ⬤ and Cell(0, 1)'s value is nil" do
         before do
           allow(@cells[0]).to receive(:value).and_return('⬤') 
         end
         
+        it 'does not loop; returns false' do
+          expect(board_search_up.search_for_winner(@cells[0], @up)).to be false
+        end
+
         it 'sends ::find to Cell with the coordinates of the next cell' do
           next_x = 0
           next_y = 1
+          allow(Cell).to receive(:find).with(next_x, next_y).and_return(@cells[1])
           expect(Cell).to receive(:find).with(next_x, next_y)
           board_search_up.search_for_winner(@cells[0], @up)
         end
       end
       
+      context "when Cell(0,0) and Cell(0,1)'s @value are ⬤ and Cell(0,2)'s value is ◯" do
+        before do
+          allow(@cells[0]).to receive(:value).and_return('⬤') 
+          allow(@cells[1]).to receive(:value).and_return('⬤') 
+          allow(@cells[2]).to receive(:value).and_return('◯') 
+        end
+        
+        it 'completes the loop once, then returns false on the second loop (◯)' do
+          allow(Cell).to receive(:find).and_return(@cells[1], @cells[2])
+          expect(Cell).to receive(:find).twice
+          board_search_up.search_for_winner(@cells[0], @up)
+        end
+
+        it 'returns false' do
+          expect(board_search_up.search_for_winner(@cells[0], @up)).to be false
+        end
+      end
+
+      context "when Cell(0,0), (0,1), (0,2), and (0,3)'s @value are all ◯" do
+        before do
+          allow(@cells[0]).to receive(:value).and_return('◯')
+          allow(@cells[1]).to receive(:value).and_return('◯')
+          allow(@cells[2]).to receive(:value).and_return('◯')
+          allow(@cells[3]).to receive(:value).and_return('◯')
+        end
+
+        it 'completes the loop 3 times and returns true' do
+          allow(Cell).to receive(:find).and_return(@cells[1], @cells[2], @cells[3])
+          expect(Cell).to receive(:find).exactly(3).times
+          board_search_up.search_for_winner(@cells[0], @up)
+        end
+
+        it 'returns true' do
+          allow(Cell).to receive(:find).and_return(@cells[1], @cells[2], @cells[3])
+          expect(board_search_up.search_for_winner(@cells[0], @up)).to be true
+        end
+      end
       
       
       
