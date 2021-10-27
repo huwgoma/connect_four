@@ -237,10 +237,27 @@ describe Board do
         end
       end
 
-      context "when the starting cell is at the edge of the board" do
+      context "when the starting cell is less than 4 cells from the edge" do
         context "starting at Cell(0, 3), looking up" do
-          it 'returns nil' do
-            expect(board_search_up.winner?(@cells[3], @up)).to be_nil
+          before do
+            allow(@cells[3]).to receive(:value).and_return('◯')
+            allow(Cell).to receive(:find).and_return(nil)
+          end
+
+          it 'returns false' do
+            expect(board_search_up.winner?(@cells[3], @up)).to be false
+          end
+        end
+
+        context "starting at Cell(0, 2), looking up" do
+          before do
+            allow(@cells[2]).to receive(:value).and_return('◯')
+            allow(@cells[3]).to receive(:value).and_return('◯')
+            allow(Cell).to receive(:find).and_return(@cells[3], nil)
+          end
+
+          it 'returns false' do
+            expect(board_search_up.winner?(@cells[2], @up)).to be false
           end
         end
       end

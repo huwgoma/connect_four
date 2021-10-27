@@ -80,7 +80,7 @@ class Board
     match_count = 1
     until match_count >= 4
       cell = Cell.find(cell.x + direction[:x], cell.y + direction[:y])
-      return if cell.nil?
+      return false if cell.nil?
       return false unless cell.value == match_value
       match_count += 1
     end
