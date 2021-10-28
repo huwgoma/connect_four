@@ -20,6 +20,7 @@ class Game
     board.display
     game_loop until board.game_over?
     game_end
+    replay
   end
 
   def game_loop
@@ -61,6 +62,11 @@ class Game
   def replay
     puts "Play again? (Y/N)"
     input = gets.chomp.downcase
-    input == 'y' ? Game.new.play : puts('Thanks for playing!')
+    if input == 'y'
+      Cell.clear_cells
+      Game.new.play
+    else
+      puts 'Thanks for playing!'
+    end
   end
 end

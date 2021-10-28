@@ -108,8 +108,11 @@ class Cell
     @x = x
     @y = y
     @value = nil
-    #@value = "#{x},#{y}"
     @@cells << self
+  end
+
+  def self.clear_cells
+    @@cells = []
   end
 
   def self.find(x, y)
@@ -119,7 +122,7 @@ class Cell
   def self.cells
     @@cells
   end
-
+  
   def update_value(symbol)
     @value = symbol
   end
