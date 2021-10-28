@@ -163,6 +163,17 @@ describe Game do
         game_replay.replay
       end
     end
+
+    context 'when input is anything other than y' do
+      before do
+        allow(game_replay).to receive(:gets).and_return('n')
+      end
+      
+      it 'does not send a message to Cell' do
+        expect(Cell).to_not receive(:clear_cells)
+        game_replay.replay
+      end
+    end
     
   end
 end
