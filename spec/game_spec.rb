@@ -141,4 +141,28 @@ describe Game do
       end
     end
   end
+
+  describe '#replay' do
+    subject(:game_replay) { described_class.new }
+    let(:game_new) { described_class.new }
+    
+    before do
+      allow(game_replay).to receive(:puts)
+    end
+
+    context 'when input is y' do
+      before do
+        allow(game_replay).to receive(:gets).and_return('Y')
+        allow(Game).to receive(:new).and_return(game_new)
+        allow(game_new).to receive(:play)
+      end
+
+      it 'sends ::clear_cells to Cell to reset @@cells between games' do
+        allow(Cell).to receive(:clear_cells)
+        expect(Cell).to receive(:clear_cells)
+        game_replay.replay
+      end
+    end
+    
+  end
 end
